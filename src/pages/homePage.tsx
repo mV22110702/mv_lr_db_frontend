@@ -24,9 +24,7 @@ export const HomePage: FC = () => {
       </h1>
       <div className={`m-10 border-solid border-2 rounded-md border-gray`}>
         <Command>
-          <CommandInput placeholder="Search..." />
           <CommandList >
-            <CommandEmpty>No results found.</CommandEmpty>
             {commands.map(({ title, link }) => (
               <CommandItem
                 onSelect={() => {
