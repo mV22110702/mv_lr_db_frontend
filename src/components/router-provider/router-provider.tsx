@@ -4,7 +4,6 @@ import {
   createRoutesFromElements,
   RouterProvider as LibraryRouterProvider,
 } from "react-router-dom";
-import PropTypes from "prop-types";
 
 type RouterProviderProperties = {
   children: ReactNode;
@@ -15,8 +14,5 @@ const RouterProvider: FC<RouterProviderProperties> = ({ children }) => {
   const routes = createRoutesFromElements(children);
   _router = createBrowserRouter(routes);
   return <LibraryRouterProvider router={_router} />;
-};
-RouterProvider.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 export { RouterProvider };

@@ -1,4 +1,4 @@
-import { apiSlice } from "@/store/apiSlice.ts";
+import { apiSlice, TagType } from "@/store/apiSlice.ts";
 import { ApiRoute } from "@/lib/enums/api-route.enum.ts";
 import { HttpMethod } from "@/lib/enums/http-method.enum.ts";
 import { ZooKeeper } from "@/store/keeperApiSlice.ts";
@@ -8,6 +8,7 @@ import { Food } from "@/store/foodApiSlice.ts";
 export const keeperApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     create: builder.mutation<FeedHistory, CreateFeedHistoryDto>({
+      invalidatesTags: [{ type: TagType.FEED_HISTORY, id: "LIST" }],
       query: (body) => ({
         url: ApiRoute.FEED_HISTORY.ONE,
         method: HttpMethod.POST,
@@ -21,6 +22,22 @@ export const keeperApiSlice = apiSlice.injectEndpoints({
       },
     }),
     getAll: builder.query<FeedHistory[], FilterFeedHistoryDto>({
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(
+                ({
+                  animal: { id: animalId },
+                  keeper: { id: keeperId },
+                  createdAt,
+                }) => ({
+                  type: TagType.FEED_HISTORY,
+                  id: `${animalId}-${keeperId}-${createdAt.toISOString()}`,
+                }),
+              ),
+              { type: TagType.FEED_HISTORY, id: "LIST" },
+            ]
+          : [{ type: TagType.FEED_HISTORY, id: "LIST" }],
       query: (body) => ({
         url: ApiRoute.FEED_HISTORY.ALL,
         method: HttpMethod.GET,
@@ -36,6 +53,12 @@ export const keeperApiSlice = apiSlice.injectEndpoints({
       },
     }),
     getOne: builder.query<FeedHistory | null, FindFeedHistoryDto>({
+      providesTags: (_, __, { animalId, keeperId, createdAt }) => [
+        {
+          type: TagType.FEED_HISTORY,
+          id: `${animalId}-${keeperId}-${createdAt.toISOString()}`,
+        },
+      ],
       query: (body) => ({
         url: ApiRoute.FEED_HISTORY.ONE,
         method: HttpMethod.GET,
@@ -52,6 +75,12 @@ export const keeperApiSlice = apiSlice.injectEndpoints({
       },
     }),
     update: builder.mutation<FeedHistory | null, UpdateFeedHistoryDto>({
+      invalidatesTags: (_, __, { animalId, keeperId, createdAt }) => [
+        {
+          type: TagType.FEED_HISTORY,
+          id: `${animalId}-${keeperId}-${createdAt.toISOString()}`,
+        },
+      ],
       query: (body) => ({
         url: ApiRoute.FEED_HISTORY.ONE,
         method: HttpMethod.PATCH,
@@ -68,6 +97,12 @@ export const keeperApiSlice = apiSlice.injectEndpoints({
       },
     }),
     delete: builder.mutation<FeedHistory | null, FindFeedHistoryDto>({
+      invalidatesTags: (_, __, { animalId, keeperId, createdAt }) => [
+        {
+          type: TagType.FEED_HISTORY,
+          id: `${animalId}-${keeperId}-${createdAt.toISOString()}`,
+        },
+      ],
       query: (body) => ({
         url: ApiRoute.FEED_HISTORY.ONE,
         method: HttpMethod.DELETE,

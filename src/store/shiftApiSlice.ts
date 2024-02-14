@@ -1,4 +1,4 @@
-import { apiSlice } from "@/store/apiSlice.ts";
+import { apiSlice, TagType } from "@/store/apiSlice.ts";
 import { ApiRoute } from "@/lib/enums/api-route.enum.ts";
 import { HttpMethod } from "@/lib/enums/http-method.enum.ts";
 import { generatePath } from "react-router";
@@ -8,6 +8,7 @@ import { ZooKeeper } from "@/store/keeperApiSlice.ts";
 export const shiftApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     create: builder.mutation<Shift, CreateShiftDto>({
+      invalidatesTags: [{ type: TagType.SHIFT, id: "LIST" }],
       query: (body) => ({
         url: ApiRoute.SHIFT.ROOT,
         method: HttpMethod.POST,
@@ -22,6 +23,18 @@ export const shiftApiSlice = apiSlice.injectEndpoints({
       },
     }),
     getAll: builder.query<Shift[], void>({
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(
+                ({ animal: { id: animalId }, keeper: { id: keeperId } }) => ({
+                  type: TagType.SHIFT,
+                  id: `${animalId}-${keeperId}`,
+                }),
+              ),
+              { type: TagType.SHIFT, id: "LIST" },
+            ]
+          : [{ type: TagType.SHIFT, id: "LIST" }],
       query: () => ApiRoute.SHIFT.ROOT,
       transformResponse: (response: Shift[]) => {
         return response.map((shift) => {
@@ -35,6 +48,9 @@ export const shiftApiSlice = apiSlice.injectEndpoints({
     }),
     getOneByAnimalAndKeeperId: builder.query<Shift | null, ShiftAnimalKeeperId>(
       {
+        providesTags: (_, __, { animalId, keeperId }) => [
+          { type: TagType.SHIFT, id: `${animalId}-${keeperId}` },
+        ],
         query: ({ animalId, keeperId }) =>
           generatePath(ApiRoute.SHIFT.BY_ANIMAL_ID_KEEPER_ID, {
             animalId: animalId.toString(),
@@ -53,6 +69,9 @@ export const shiftApiSlice = apiSlice.injectEndpoints({
       },
     ),
     update: builder.mutation<Shift, UpdateShiftDto>({
+      invalidatesTags: (_, __, { animalId, keeperId }) => [
+        { type: TagType.SHIFT, id: `${animalId}-${keeperId}` },
+      ],
       query: ({ animalId, keeperId, body }) => ({
         url: generatePath(ApiRoute.SHIFT.BY_ANIMAL_ID_KEEPER_ID, {
           animalId: animalId.toString(),
@@ -70,6 +89,9 @@ export const shiftApiSlice = apiSlice.injectEndpoints({
       },
     }),
     remove: builder.mutation<Shift, ShiftAnimalKeeperId>({
+      invalidatesTags: (_, __, { animalId, keeperId }) => [
+        { type: TagType.SHIFT, id: `${animalId}-${keeperId}` },
+      ],
       query: ({ animalId, keeperId }) => ({
         url: generatePath(ApiRoute.SHIFT.BY_ANIMAL_ID_KEEPER_ID, {
           animalId: animalId.toString(),

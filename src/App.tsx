@@ -1,9 +1,6 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
 import {store} from "@/store/store.ts";
 import {Provider} from "react-redux";
+import {Router} from "@/components/router/router.tsx";
 
 function App() {
   return (

@@ -1,4 +1,4 @@
-import { apiSlice } from "@/store/apiSlice.ts";
+import { apiSlice, TagType } from "@/store/apiSlice.ts";
 import { generatePath } from "react-router";
 import { HttpMethod } from "@/lib/enums/http-method.enum.ts";
 import { ApiRoute } from "@/lib/enums/api-route.enum.ts";
@@ -6,6 +6,7 @@ import { ApiRoute } from "@/lib/enums/api-route.enum.ts";
 export const animalApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     create: builder.mutation<ZooAnimal, CreateAnimalDto>({
+      invalidatesTags: [{ type: TagType.ANIMAL, id: "LIST" }],
       query: (body) => ({
         url: ApiRoute.ANIMAL.ROOT,
         method: HttpMethod.POST,
@@ -13,6 +14,7 @@ export const animalApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getDetailsById: builder.query<GetAnimalDetailsResponseDto, number>({
+      providesTags: (_, __, id) => [{ type: TagType.ANIMAL, id }],
       query: (id) =>
         generatePath(ApiRoute.ANIMAL.GET_DETAILS_BY_ID, { id: id.toString() }),
       transformResponse: (response: GetAnimalDetailsResponseDto) => {
@@ -31,15 +33,24 @@ export const animalApiSlice = apiSlice.injectEndpoints({
             };
           }),
         ];
-      }
+      },
     }),
     getAll: builder.query<ZooAnimal[], void>({
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: TagType.ANIMAL, id })),
+              { type: TagType.ANIMAL, id: "LIST" },
+            ]
+          : [{ type: TagType.ANIMAL, id: "LIST" }],
       query: () => ApiRoute.ANIMAL.ROOT,
     }),
-    getOneById: builder.query<ZooAnimal|null, number>({
+    getOneById: builder.query<ZooAnimal | null, number>({
+      providesTags: (_, __, id) => [{ type: TagType.ANIMAL, id }],
       query: (id) => generatePath(ApiRoute.ANIMAL.BY_ID, { id: id.toString() }),
     }),
     update: builder.mutation<ZooAnimal, UpdateAnimalDto>({
+      invalidatesTags: (_, __, { id }) => [{ type: TagType.ANIMAL, id }],
       query: ({ id, body }) => ({
         url: generatePath(ApiRoute.ANIMAL.BY_ID, { id: id.toString() }),
         method: HttpMethod.PATCH,
@@ -47,6 +58,7 @@ export const animalApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     remove: builder.mutation<ZooAnimal, number>({
+      invalidatesTags: (_, __, id) => [{ type: TagType.ANIMAL, id }],
       query: (id) => ({
         url: generatePath(ApiRoute.ANIMAL.BY_ID, { id: id.toString() }),
         method: HttpMethod.DELETE,
@@ -75,7 +87,6 @@ export type AnimalFoodDetails = {
   keeperFullname: string;
   foodId: number;
   foodName: string;
-  //todo
   createdAt: Date;
   amount: number;
 };
@@ -84,9 +95,7 @@ export type AnimalShiftDetails = {
   keeperId: number;
   keeperFullname: string;
   salary: number;
-  //todo
   startsAt: Date;
-  //todo
   endsAt: Date;
 };
 
