@@ -5,45 +5,34 @@ import { ApiRoute } from "@/lib/enums/api-route.enum.ts";
 
 export const animalApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // getFreightsByUserId: builder.query<GetFreightsResponseDto, FindFreightDto>({
-    //     query: ({
-    //                 ownerId,
-    //                 pagination: { page = 0, pageSize = 10 },
-    //                 filter: { name },
-    //                 sort: { order, field },
-    //             }) => {
-    //         const initialPath = generatePath(ApiRoute.FREIGHTS.GET_BY_OWNER_ID, {
-    //             ownerId: ownerId.toString(),
-    //         });
-    //         const searchParams = new URLSearchParams();
-    //         if (name) {
-    //             searchParams.set('name', name);
-    //         }
-    //         if (order && field) {
-    //             searchParams.set('order', order);
-    //             searchParams.set('field', field);
-    //         }
-    //         searchParams.set('page', page.toString());
-    //         searchParams.set('pageSize', pageSize.toString());
-    //         return `${initialPath}?${searchParams.toString()}`;
-    //     },
-    //     providesTags: [TagType.FREIGHT],
-    // }),
-    // removeFreightById: builder.mutation<void, number>({
-    //     query: (id: number) => ({
-    //         url: generatePath(ApiRoute.FREIGHTS.REMOVE_BY_ID, {
-    //             id: id.toString(),
-    //         }),
-    //         method: HttpMethod.DELETE,
-    //         body: undefined,
-    //     }),
-    //     invalidatesTags: [TagType.FREIGHT],
-    // }),
-    create: builder.mutation<CreateAnimalDto, CreateAnimalDto>({
+    create: builder.mutation<ZooAnimal, CreateAnimalDto>({
       query: (body) => ({
         url: ApiRoute.ANIMAL.ROOT,
         method: HttpMethod.POST,
         body,
+      }),
+    }),
+    getDetailsById: builder.query<GetAnimalDetailsResponseDto, number>({
+      query: (id) =>
+        generatePath(ApiRoute.ANIMAL.GET_DETAILS_BY_ID, { id: id.toString() }),
+    }),
+    getAll: builder.query<ZooAnimal[], void>({
+      query: () => ApiRoute.ANIMAL.ROOT,
+    }),
+    getOneById: builder.query<ZooAnimal|null, number>({
+      query: (id) => generatePath(ApiRoute.ANIMAL.BY_ID, { id: id.toString() }),
+    }),
+    update: builder.mutation<ZooAnimal, UpdateAnimalDto>({
+      query: ({ id, body }) => ({
+        url: generatePath(ApiRoute.ANIMAL.BY_ID, { id: id.toString() }),
+        method: HttpMethod.PATCH,
+        body,
+      }),
+    }),
+    remove: builder.mutation<ZooAnimal, number>({
+      query: (id) => ({
+        url: generatePath(ApiRoute.ANIMAL.BY_ID, { id: id.toString() }),
+        method: HttpMethod.DELETE,
       }),
     }),
   }),
@@ -53,3 +42,37 @@ export type CreateAnimalDto = {
   scientificName: string;
   name: string;
 };
+export type UpdateAnimalDto = {
+  id: number;
+  body: Partial<CreateAnimalDto>;
+};
+
+export type ZooAnimal = {
+  id: number;
+  scientificName: string;
+  name: string;
+};
+
+export type AnimalFoodDetails = {
+  keeperId: number;
+  keeperFullname: string;
+  foodId: number;
+  foodName: string;
+  //todo
+  createdAt: Date;
+  amount: number;
+};
+
+export type AnimalShiftDetails = {
+  keeperId: number;
+  keeperFullname: string;
+  salary: number;
+  //todo
+  startsAt: Date;
+  endsAt: string;
+};
+
+export type GetAnimalDetailsResponseDto = [
+  AnimalFoodDetails[],
+  AnimalShiftDetails[],
+];

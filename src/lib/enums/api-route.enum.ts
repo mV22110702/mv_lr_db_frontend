@@ -5,8 +5,8 @@ export const ApiRoute = {
     BY_ID: "/animal/:id",
   },
   FEED_HISTORY: {
-    ONE_BY_ID: "/feed-history/:id",
-    GET_ALL: "/feed-history/all",
+    ONE: "/feed-history/one",
+    ALL: "/feed-history/all",
   },
   FOOD: {
     ROOT: "/food",
