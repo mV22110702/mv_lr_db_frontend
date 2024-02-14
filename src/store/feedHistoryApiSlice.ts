@@ -7,15 +7,29 @@ import { Food } from "@/store/foodApiSlice.ts";
 
 export const keeperApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    create: builder.mutation<ZooKeeper, CreateFeedHistoryDto>({
+    create: builder.mutation<FeedHistory, CreateFeedHistoryDto>({
       query: (body) => ({
         url: ApiRoute.FEED_HISTORY.ONE,
         method: HttpMethod.POST,
         body,
       }),
+        transformResponse: (response: FeedHistory) => {
+            return {
+            ...response,
+            createdAt: new Date(response.createdAt),
+            };
+        },
     }),
     getAll: builder.query<FeedHistory[], void>({
       query: () => ApiRoute.FEED_HISTORY.ALL,
+      transformResponse: (response: FeedHistory[]) => {
+        return response.map((feedHistory) => {
+          return {
+            ...feedHistory,
+            createdAt: new Date(feedHistory.createdAt),
+          };
+        });
+      },
     }),
     getOne: builder.query<FeedHistory | null, FindFeedHistoryDto>({
       query: (body) => ({
@@ -23,6 +37,15 @@ export const keeperApiSlice = apiSlice.injectEndpoints({
         method: HttpMethod.GET,
         body,
       }),
+      transformResponse: (response: FeedHistory | null) => {
+        if (response) {
+          return {
+            ...response,
+            createdAt: new Date(response.createdAt),
+          };
+        }
+        return null;
+      },
     }),
     update: builder.mutation<FeedHistory | null, UpdateFeedHistoryDto>({
       query: (body) => ({
@@ -30,6 +53,15 @@ export const keeperApiSlice = apiSlice.injectEndpoints({
         method: HttpMethod.PATCH,
         body,
       }),
+      transformResponse: (response: FeedHistory | null) => {
+        if (response) {
+          return {
+            ...response,
+            createdAt: new Date(response.createdAt),
+          };
+        }
+        return null;
+      },
     }),
     delete: builder.mutation<FeedHistory | null, FindFeedHistoryDto>({
       query: (body) => ({
@@ -37,6 +69,15 @@ export const keeperApiSlice = apiSlice.injectEndpoints({
         method: HttpMethod.DELETE,
         body,
       }),
+      transformResponse: (response: FeedHistory | null) => {
+        if (response) {
+          return {
+            ...response,
+            createdAt: new Date(response.createdAt),
+          };
+        }
+        return null;
+      },
     }),
   }),
 });
@@ -45,7 +86,7 @@ export type CreateFeedHistoryDto = {
   keeperId: number;
 
   animalId: number;
-  //todo
+
   createdAt: Date;
 
   foodId: number;
@@ -59,7 +100,7 @@ export type FeedHistory = {
   keeper: ZooKeeper;
 
   food: Food;
-  //todo
+
   createdAt: Date;
 
   amount: number;

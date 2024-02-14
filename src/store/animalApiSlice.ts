@@ -15,6 +15,23 @@ export const animalApiSlice = apiSlice.injectEndpoints({
     getDetailsById: builder.query<GetAnimalDetailsResponseDto, number>({
       query: (id) =>
         generatePath(ApiRoute.ANIMAL.GET_DETAILS_BY_ID, { id: id.toString() }),
+      transformResponse: (response: GetAnimalDetailsResponseDto) => {
+        return [
+          response[0].map((food) => {
+            return {
+              ...food,
+              createdAt: new Date(food.createdAt),
+            };
+          }),
+          response[1].map((shift) => {
+            return {
+              ...shift,
+              startsAt: new Date(shift.startsAt),
+              endsAt: new Date(shift.endsAt),
+            };
+          }),
+        ];
+      }
     }),
     getAll: builder.query<ZooAnimal[], void>({
       query: () => ApiRoute.ANIMAL.ROOT,
@@ -69,7 +86,8 @@ export type AnimalShiftDetails = {
   salary: number;
   //todo
   startsAt: Date;
-  endsAt: string;
+  //todo
+  endsAt: Date;
 };
 
 export type GetAnimalDetailsResponseDto = [

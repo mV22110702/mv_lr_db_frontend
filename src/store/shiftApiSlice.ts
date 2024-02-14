@@ -13,9 +13,25 @@ export const shiftApiSlice = apiSlice.injectEndpoints({
         method: HttpMethod.POST,
         body,
       }),
+      transformResponse: (response: Shift) => {
+        return {
+          ...response,
+          startsAt: new Date(response.startsAt),
+          endsAt: new Date(response.endsAt),
+        };
+      },
     }),
     getAll: builder.query<Shift[], void>({
       query: () => ApiRoute.SHIFT.ROOT,
+      transformResponse: (response: Shift[]) => {
+        return response.map((shift) => {
+          return {
+            ...shift,
+            startsAt: new Date(shift.startsAt),
+            endsAt: new Date(shift.endsAt),
+          };
+        });
+      },
     }),
     getOneByAnimalAndKeeperId: builder.query<Shift | null, ShiftAnimalKeeperId>(
       {
@@ -24,6 +40,16 @@ export const shiftApiSlice = apiSlice.injectEndpoints({
             animalId: animalId.toString(),
             keeperId: keeperId.toString(),
           }),
+        transformResponse: (response: Shift | null) => {
+          if (response) {
+            return {
+              ...response,
+              startsAt: new Date(response.startsAt),
+              endsAt: new Date(response.endsAt),
+            };
+          }
+          return null;
+        },
       },
     ),
     update: builder.mutation<Shift, UpdateShiftDto>({
@@ -35,6 +61,13 @@ export const shiftApiSlice = apiSlice.injectEndpoints({
         method: HttpMethod.PATCH,
         body,
       }),
+      transformResponse: (response: Shift) => {
+        return {
+          ...response,
+          startsAt: new Date(response.startsAt),
+          endsAt: new Date(response.endsAt),
+        };
+      },
     }),
     remove: builder.mutation<Shift, ShiftAnimalKeeperId>({
       query: ({ animalId, keeperId }) => ({
@@ -44,6 +77,13 @@ export const shiftApiSlice = apiSlice.injectEndpoints({
         }),
         method: HttpMethod.DELETE,
       }),
+      transformResponse: (response: Shift) => {
+        return {
+          ...response,
+          startsAt: new Date(response.startsAt),
+          endsAt: new Date(response.endsAt),
+        };
+      },
     }),
   }),
 });
@@ -51,9 +91,7 @@ export const shiftApiSlice = apiSlice.injectEndpoints({
 export type Shift = {
   animal: ZooAnimal;
   keeper: ZooKeeper;
-  //todo
   startsAt: Date;
-  //todo
   endsAt: Date;
   salary: number;
 };
@@ -64,9 +102,7 @@ export type ShiftAnimalKeeperId = {
 };
 
 export type CreateShiftDto = ShiftAnimalKeeperId & {
-  //todo
   startsAt: Date;
-  //todo
   endsAt: Date;
   salary: number;
 };
