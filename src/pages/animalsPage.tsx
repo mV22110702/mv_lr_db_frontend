@@ -1,3 +1,3 @@
 import { FC } from "react";
 
-export const AnimalsPage: FC = () => <div></div>;
+export const AnimalsPage: FC = () => <div>sdf</div>;
