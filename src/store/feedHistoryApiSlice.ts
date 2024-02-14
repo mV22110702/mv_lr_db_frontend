@@ -13,15 +13,19 @@ export const keeperApiSlice = apiSlice.injectEndpoints({
         method: HttpMethod.POST,
         body,
       }),
-        transformResponse: (response: FeedHistory) => {
-            return {
-            ...response,
-            createdAt: new Date(response.createdAt),
-            };
-        },
+      transformResponse: (response: FeedHistory) => {
+        return {
+          ...response,
+          createdAt: new Date(response.createdAt),
+        };
+      },
     }),
-    getAll: builder.query<FeedHistory[], void>({
-      query: () => ApiRoute.FEED_HISTORY.ALL,
+    getAll: builder.query<FeedHistory[], FilterFeedHistoryDto>({
+      query: (body) => ({
+        url: ApiRoute.FEED_HISTORY.ALL,
+        method: HttpMethod.GET,
+        body,
+      }),
       transformResponse: (response: FeedHistory[]) => {
         return response.map((feedHistory) => {
           return {
@@ -115,3 +119,7 @@ export type UpdateFeedHistoryDto = Partial<
   Pick<CreateFeedHistoryDto, "amount" | "foodId">
 > &
   FindFeedHistoryDto;
+
+export type FilterFeedHistoryDto = Partial<
+  Pick<CreateFeedHistoryDto, "animalId" | "keeperId">
+>;
