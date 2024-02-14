@@ -32,7 +32,7 @@ export const AnimalsPage: FC = () => {
   }
 
   return (
-    <Dialog>
+    <Dialog open={!!chosenAnimalId || openAddAnimalDialog}>
       <div
         className={
           "p-12 pt-2 w-full h-full flex-column justify-center items-center"
