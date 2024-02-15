@@ -100,7 +100,7 @@ export const useShiftColumns = (
         accessorKey: "salary",
         header: () => <div className="text-center">Salary</div>,
         cell: ({ getValue }) => {
-          return <div className="text-center">{getValue<number>()}</div>;
+          return <div className="text-center">{(getValue<number>()).toFixed(2)}</div>;
         },
       },
       {

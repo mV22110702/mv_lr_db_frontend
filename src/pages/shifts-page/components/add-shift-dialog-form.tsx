@@ -142,9 +142,9 @@ export const AddShiftDialogForm = ({
                     <SelectValue placeholder="Select animal" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
+                <SelectContent className={'bg-white'}>
                   {isErrorAnimals ? (
-                    <SelectItem disabled value={"."}>
+                    <SelectItem className={'z-30 w-full'} disabled value={"."}>
                       Error loading animals
                     </SelectItem>
                   ) : isLoadingAnimals ? (
@@ -179,7 +179,7 @@ export const AddShiftDialogForm = ({
                     <SelectValue placeholder="Select keeper" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
+                <SelectContent className={'z-5000 bg-white'}>
                   {isErrorKeepers ? (
                     <SelectItem disabled value={"."}>
                       Error loading animals

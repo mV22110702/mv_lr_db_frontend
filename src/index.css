@@ -21,7 +21,11 @@
     padding: 30px;
     border-radius: 4px;
   }
-
+  button[role='combobox'] + div {
+    z-index: 100;
+    position: relative;
+    width:40%;
+  }
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
