@@ -5,7 +5,7 @@ import { generatePath } from "react-router";
 
 export const keeperApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    create: builder.mutation<ZooKeeper, CreateKeeperDto>({
+    createKeeper: builder.mutation<ZooKeeper, CreateKeeperDto>({
       invalidatesTags: [{ type: TagType.KEEPER, id: "LIST" }],
       query: (body) => ({
         url: ApiRoute.KEEPER.ROOT,
@@ -19,7 +19,7 @@ export const keeperApiSlice = apiSlice.injectEndpoints({
           id: id.toString(),
         }),
     }),
-    getAll: builder.query<ZooKeeper[], void>({
+    getAllKeepers: builder.query<ZooKeeper[], void>({
       providesTags: (result) =>
         result
           ? [
@@ -29,11 +29,11 @@ export const keeperApiSlice = apiSlice.injectEndpoints({
           : [{ type: TagType.KEEPER, id: "LIST" }],
       query: () => ApiRoute.KEEPER.ROOT,
     }),
-    getOneById: builder.query<ZooKeeper | null, number>({
+    getOneKeeperById: builder.query<ZooKeeper | null, number>({
       providesTags: (_, __, id) => [{ type: TagType.KEEPER, id }],
       query: (id) => generatePath(ApiRoute.KEEPER.BY_ID, { id: id.toString() }),
     }),
-    update: builder.mutation<ZooKeeper, UpdateKeeperDto>({
+    updateKeeper: builder.mutation<ZooKeeper, UpdateKeeperDto>({
       invalidatesTags: (_, __, { id }) => [{ type: TagType.KEEPER, id }],
       query: ({ id, body }) => ({
         url: generatePath(ApiRoute.KEEPER.BY_ID, { id: id.toString() }),
@@ -41,7 +41,7 @@ export const keeperApiSlice = apiSlice.injectEndpoints({
         body,
       }),
     }),
-    remove: builder.mutation<ZooKeeper, number>({
+    removeKeeper: builder.mutation<ZooKeeper, number>({
       invalidatesTags: (_, __, id) => [{ type: TagType.KEEPER, id }],
       query: (id) => ({
         url: generatePath(ApiRoute.KEEPER.BY_ID, { id: id.toString() }),

@@ -7,7 +7,7 @@ import { ZooKeeper } from "@/store/keeperApiSlice.ts";
 
 export const shiftApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    create: builder.mutation<Shift, CreateShiftDto>({
+    createShift: builder.mutation<Shift, CreateShiftDto>({
       invalidatesTags: [{ type: TagType.SHIFT, id: "LIST" }],
       query: (body) => ({
         url: ApiRoute.SHIFT.ROOT,
@@ -22,7 +22,7 @@ export const shiftApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
-    getAll: builder.query<Shift[], void>({
+    getAllShifts: builder.query<Shift[], void>({
       providesTags: (result) =>
         result
           ? [
@@ -46,29 +46,30 @@ export const shiftApiSlice = apiSlice.injectEndpoints({
         });
       },
     }),
-    getOneByAnimalAndKeeperId: builder.query<Shift | null, ShiftAnimalKeeperId>(
-      {
-        providesTags: (_, __, { animalId, keeperId }) => [
-          { type: TagType.SHIFT, id: `${animalId}-${keeperId}` },
-        ],
-        query: ({ animalId, keeperId }) =>
-          generatePath(ApiRoute.SHIFT.BY_ANIMAL_ID_KEEPER_ID, {
-            animalId: animalId.toString(),
-            keeperId: keeperId.toString(),
-          }),
-        transformResponse: (response: Shift | null) => {
-          if (response) {
-            return {
-              ...response,
-              startsAt: new Date(response.startsAt),
-              endsAt: new Date(response.endsAt),
-            };
-          }
-          return null;
-        },
+    getOneShiftByAnimalAndKeeperId: builder.query<
+      Shift | null,
+      ShiftAnimalKeeperId
+    >({
+      providesTags: (_, __, { animalId, keeperId }) => [
+        { type: TagType.SHIFT, id: `${animalId}-${keeperId}` },
+      ],
+      query: ({ animalId, keeperId }) =>
+        generatePath(ApiRoute.SHIFT.BY_ANIMAL_ID_KEEPER_ID, {
+          animalId: animalId.toString(),
+          keeperId: keeperId.toString(),
+        }),
+      transformResponse: (response: Shift | null) => {
+        if (response) {
+          return {
+            ...response,
+            startsAt: new Date(response.startsAt),
+            endsAt: new Date(response.endsAt),
+          };
+        }
+        return null;
       },
-    ),
-    update: builder.mutation<Shift, UpdateShiftDto>({
+    }),
+    updateShift: builder.mutation<Shift, UpdateShiftDto>({
       invalidatesTags: (_, __, { animalId, keeperId }) => [
         { type: TagType.SHIFT, id: `${animalId}-${keeperId}` },
       ],
@@ -88,7 +89,7 @@ export const shiftApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
-    remove: builder.mutation<Shift, ShiftAnimalKeeperId>({
+    removeShift: builder.mutation<Shift, ShiftAnimalKeeperId>({
       invalidatesTags: (_, __, { animalId, keeperId }) => [
         { type: TagType.SHIFT, id: `${animalId}-${keeperId}` },
       ],

@@ -3,9 +3,9 @@ import { ApiRoute } from "@/lib/enums/api-route.enum.ts";
 import { HttpMethod } from "@/lib/enums/http-method.enum.ts";
 import { generatePath } from "react-router";
 
-export const keeperApiSlice = apiSlice.injectEndpoints({
+export const foodApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    create: builder.mutation<Food, CreateFoodDto>({
+    createFood: builder.mutation<Food, CreateFoodDto>({
       invalidatesTags: [{ type: TagType.FOOD, id: "LIST" }],
       query: (body) => ({
         url: ApiRoute.FOOD.ROOT,
@@ -20,7 +20,7 @@ export const keeperApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
-    getAll: builder.query<Food[], void>({
+    getAllFoods: builder.query<Food[], void>({
       providesTags: (result) =>
         result
           ? [
@@ -39,7 +39,7 @@ export const keeperApiSlice = apiSlice.injectEndpoints({
         });
       },
     }),
-    getOneById: builder.query<Food | null, number>({
+    getOneFoodById: builder.query<Food | null, number>({
       providesTags: (_, __, id) => [{ type: TagType.FOOD, id }],
       query: (id) => generatePath(ApiRoute.FOOD.BY_ID, { id: id.toString() }),
       transformResponse: (response: Food | null) => {
@@ -53,7 +53,7 @@ export const keeperApiSlice = apiSlice.injectEndpoints({
         return null;
       },
     }),
-    update: builder.mutation<Food, UpdateFoodDto>({
+    updateFood: builder.mutation<Food, UpdateFoodDto>({
       invalidatesTags: (_, __, { id }) => [{ type: TagType.FOOD, id }],
       query: ({ id, body }) => ({
         url: generatePath(ApiRoute.FOOD.BY_ID, { id: id.toString() }),
@@ -68,7 +68,7 @@ export const keeperApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
-    remove: builder.mutation<Food, number>({
+    removeFood: builder.mutation<Food, number>({
       invalidatesTags: (_, __, id) => [{ type: TagType.FOOD, id }],
       query: (id) => ({
         url: generatePath(ApiRoute.FOOD.BY_ID, { id: id.toString() }),

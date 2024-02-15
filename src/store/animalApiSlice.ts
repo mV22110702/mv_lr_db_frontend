@@ -5,7 +5,7 @@ import { ApiRoute } from "@/lib/enums/api-route.enum.ts";
 
 export const animalApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    create: builder.mutation<ZooAnimal, CreateAnimalDto>({
+    createAnimal: builder.mutation<ZooAnimal, CreateAnimalDto>({
       invalidatesTags: [{ type: TagType.ANIMAL, id: "LIST" }],
       query: (body) => ({
         url: ApiRoute.ANIMAL.ROOT,
@@ -13,7 +13,7 @@ export const animalApiSlice = apiSlice.injectEndpoints({
         body,
       }),
     }),
-    getDetailsById: builder.query<GetAnimalDetailsResponseDto, number>({
+    getAnimalDetailsById: builder.query<GetAnimalDetailsResponseDto, number>({
       providesTags: (_, __, id) => [{ type: TagType.ANIMAL, id }],
       query: (id) =>
         generatePath(ApiRoute.ANIMAL.GET_DETAILS_BY_ID, { id: id.toString() }),
@@ -35,7 +35,7 @@ export const animalApiSlice = apiSlice.injectEndpoints({
         ];
       },
     }),
-    getAll: builder.query<ZooAnimal[], void>({
+    getAllAnimals: builder.query<ZooAnimal[], void>({
       providesTags: (result) =>
         result
           ? [
@@ -45,7 +45,7 @@ export const animalApiSlice = apiSlice.injectEndpoints({
           : [{ type: TagType.ANIMAL, id: "LIST" }],
       query: () => ApiRoute.ANIMAL.ROOT,
     }),
-    getOneById: builder.query<ZooAnimal | null, number>({
+    getOneAnimalById: builder.query<ZooAnimal | null, number>({
       providesTags: (_, __, id) => [{ type: TagType.ANIMAL, id }],
       query: (id) => generatePath(ApiRoute.ANIMAL.BY_ID, { id: id.toString() }),
     }),
@@ -57,7 +57,7 @@ export const animalApiSlice = apiSlice.injectEndpoints({
         body,
       }),
     }),
-    remove: builder.mutation<ZooAnimal, number>({
+    removeAnimal: builder.mutation<ZooAnimal, number>({
       invalidatesTags: (_, __, id) => [{ type: TagType.ANIMAL, id }],
       query: (id) => ({
         url: generatePath(ApiRoute.ANIMAL.BY_ID, { id: id.toString() }),

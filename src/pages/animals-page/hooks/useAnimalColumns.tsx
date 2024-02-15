@@ -19,7 +19,7 @@ export const useAnimalColumns = (
   setChosenAnimalId: React.Dispatch<number | null>,
   setOpenAddAnimalDialog: React.Dispatch<boolean>,
 ) => {
-  const [remove, result] = animalApiSlice.useRemoveMutation();
+  const [remove, result] = animalApiSlice.useRemoveAnimalMutation();
   const navigate = useNavigate();
   const onRemove = (id: number) => {
     remove(id);

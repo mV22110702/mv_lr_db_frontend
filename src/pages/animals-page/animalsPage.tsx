@@ -9,16 +9,16 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
-import { ChangeAnimalDialogForm } from "@/pages/components/change-animal-dialog-form.tsx";
-import { useAnimalColumns } from "@/pages/hooks/useAnimalColumns.tsx";
+import { ChangeAnimalDialogForm } from "@/pages/animals-page/components/change-animal-dialog-form.tsx";
+import { useAnimalColumns } from "@/pages/animals-page/hooks/useAnimalColumns.tsx";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button.tsx";
-import { AddAnimalDialogForm } from "@/pages/components/add-animal-dialog-form.tsx";
+import { AddAnimalDialogForm } from "@/pages/animals-page/components/add-animal-dialog-form.tsx";
 
 export const AnimalsPage: FC = () => {
-  const { data, error, isError, isLoading } = animalApiSlice.useGetAllQuery();
+  const { data, error, isError, isLoading } = animalApiSlice.useGetAllAnimalsQuery();
   const [chosenAnimalId, setChosenAnimalId] = useState<number | null>(null);
   const [openAddAnimalDialog, setOpenAddAnimalDialog] = useState(false);
   const columns = useAnimalColumns(setChosenAnimalId, setOpenAddAnimalDialog);

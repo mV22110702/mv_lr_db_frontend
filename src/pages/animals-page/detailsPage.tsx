@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { animalApiSlice } from "@/store/animalApiSlice.ts";
 import { toast } from "sonner";
 import { DataTable } from "@/components/data-table/data-table.tsx";
-import { useAnimalDetailsColumns } from "@/pages/hooks/useAnimalDetailsColumns.tsx";
+import { useAnimalDetailsColumns } from "@/pages/animals-page/hooks/useAnimalDetailsColumns.tsx";
 
 export const DetailsPage = () => {
   const params = useParams<{ id: string }>();
