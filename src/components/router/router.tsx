@@ -7,6 +7,7 @@ import { DetailsPage } from "@/pages/animals-page/detailsPage.tsx";
 import { KeepersPage } from "@/pages/keepers-page/keepersPage.tsx";
 import { ShiftsPage } from "@/pages/shifts-page/shiftsPage.tsx";
 import { FoodPage } from "@/pages/food-page/foodPage.tsx";
+import { FeedHistoryPage } from "@/pages/feed-history-page/feedHistoryPage.tsx";
 
 export const Router = () => {
   return (
@@ -17,6 +18,7 @@ export const Router = () => {
       <Route path={AppRoute.KEEPERS.ROOT} element={<KeepersPage />} />
       <Route path={AppRoute.SHIFTS.ROOT} element={<ShiftsPage />} />
       <Route path={AppRoute.FOOD.ROOT} element={<FoodPage />} />
+      <Route path={AppRoute.FEED_HISTORY.ROOT} element={<FeedHistoryPage />} />
     </RouterProvider>
   );
 };

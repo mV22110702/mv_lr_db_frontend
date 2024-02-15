@@ -1,17 +1,7 @@
-import { FC, useEffect } from "react";
-import {
-  Command,
-  CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-  CommandShortcut,
-} from "@/components/ui/command";
+import { FC } from "react";
+import { Command, CommandItem, CommandList } from "@/components/ui/command";
 import { AppRoute } from "@/lib/enums/app-route.enum.ts";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const HomePage: FC = () => {
   const navigate = useNavigate();
@@ -24,7 +14,7 @@ export const HomePage: FC = () => {
       </h1>
       <div className={`m-10 border-solid border-2 rounded-md border-gray`}>
         <Command>
-          <CommandList >
+          <CommandList>
             {commands.map(({ title, link }) => (
               <CommandItem
                 onSelect={() => {

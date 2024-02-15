@@ -11,30 +11,30 @@ import { MoreHorizontal } from "lucide-react";
 import { DialogTrigger } from "@/components/ui/dialog.tsx";
 import { toast } from "sonner";
 import {
-  shiftApiSlice,
-  Shift,
-  ShiftAnimalKeeperId,
-} from "@/store/shiftApiSlice.ts";
+  feedHistoryApiSlice,
+  FeedHistory,
+  FindFeedHistoryDto,
+} from "@/store/feedHistoryApiSlice.ts";
 
-export const useShiftColumns = (
-  setChosenShiftId: React.Dispatch<ShiftAnimalKeeperId | null>,
-  setOpenAddShiftDialog: React.Dispatch<boolean>,
+export const useFeedHistoryColumns = (
+  setChosenFeedHistoryId: React.Dispatch<FindFeedHistoryDto | null>,
+  setOpenAddFeedHistoryDialog: React.Dispatch<boolean>,
 ) => {
-  const [remove, result] = shiftApiSlice.useRemoveShiftMutation();
-  const onRemove = (id: ShiftAnimalKeeperId) => {
+  const [remove, result] = feedHistoryApiSlice.useRemoveFeedHistoryMutation();
+  const onRemove = (id: FindFeedHistoryDto) => {
     remove(id);
   };
   useEffect(() => {
     if (result.isSuccess) {
-      toast.success("Shift removed");
+      toast.success("Feed history removed");
     }
   }, [result.isSuccess]);
   useEffect(() => {
     if (result.isError) {
-      toast.error("Error removing shift");
+      toast.error("Error removing feed history");
     }
   }, [result.isError]);
-  const columns: ColumnDef<Shift>[] = useMemo(
+  const columns: ColumnDef<FeedHistory>[] = useMemo(
     () => [
       {
         id: "animalId",
@@ -79,35 +79,19 @@ export const useShiftColumns = (
         },
       },
       {
-        accessorKey: "startsAt",
-        header: () => <div className="text-center">Starts At</div>,
+        accessorKey: "createdAt",
+        header: () => <div className="text-center">Created At</div>,
         cell: ({ getValue }) => {
           return (
             <div className="text-center">{getValue<Date>().toISOString()}</div>
           );
-        },
-      },
-      {
-        accessorKey: "endsAt",
-        header: () => <div className="text-center">Ends At</div>,
-        cell: ({ getValue }) => {
-          return (
-            <div className="text-center">{getValue<Date>().toISOString()}</div>
-          );
-        },
-      },
-      {
-        accessorKey: "salary",
-        header: () => <div className="text-center">Salary</div>,
-        cell: ({ getValue }) => {
-          return <div className="text-center">{(getValue<number>()).toFixed(2)}</div>;
         },
       },
       {
         id: "actions",
         header: () => <div className="text-center">Actions</div>,
         cell: ({ row }) => {
-          const shift = row.original;
+          const feedHistory = row.original;
 
           return (
             <div className={"flex place-content-center"}>
@@ -122,11 +106,12 @@ export const useShiftColumns = (
                   <DialogTrigger
                     asChild
                     onClick={() => {
-                      setChosenShiftId({
-                        animalId: shift.animal.id,
-                        keeperId: shift.keeper.id,
+                      setChosenFeedHistoryId({
+                        animalId: feedHistory.animal.id,
+                        keeperId: feedHistory.keeper.id,
+                        createdAt: feedHistory.createdAt,
                       });
-                      setOpenAddShiftDialog(false);
+                      setOpenAddFeedHistoryDialog(false);
                     }}
                   >
                     <DropdownMenuItem>
@@ -136,8 +121,9 @@ export const useShiftColumns = (
                   <DropdownMenuItem
                     onSelect={() =>
                       onRemove({
-                        animalId: shift.animal.id,
-                        keeperId: shift.keeper.id,
+                        animalId: feedHistory.animal.id,
+                        keeperId: feedHistory.keeper.id,
+                        createdAt: feedHistory.createdAt,
                       })
                     }
                   >
@@ -150,7 +136,7 @@ export const useShiftColumns = (
         },
       },
     ],
-    [setChosenShiftId],
+    [setChosenFeedHistoryId],
   );
   return columns;
 };

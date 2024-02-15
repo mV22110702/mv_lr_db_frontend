@@ -24,7 +24,10 @@ export const feedHistoryApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
-    getAllFeedHistories: builder.query<FeedHistory[], FilterFeedHistoryDto>({
+    getAllFeedHistories: builder.query<
+      FeedHistory[],
+      FilterFeedHistoryDto | undefined
+    >({
       providesTags: (result) =>
         result
           ? [
@@ -44,7 +47,7 @@ export const feedHistoryApiSlice = apiSlice.injectEndpoints({
       query: (body) => ({
         url: ApiRoute.FEED_HISTORY.ALL,
         method: HttpMethod.GET,
-        body,
+        body: body ?? {},
       }),
       transformResponse: (response: FeedHistory[]) => {
         return response.map((feedHistory) => {
@@ -103,7 +106,7 @@ export const feedHistoryApiSlice = apiSlice.injectEndpoints({
         return null;
       },
     }),
-    deleteFeedHistory: builder.mutation<FeedHistory | null, FindFeedHistoryDto>(
+    removeFeedHistory: builder.mutation<FeedHistory | null, FindFeedHistoryDto>(
       {
         invalidatesTags: (_, __, { animalId, keeperId, createdAt }) => [
           {
