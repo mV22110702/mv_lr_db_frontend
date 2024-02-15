@@ -49,7 +49,7 @@ export const animalApiSlice = apiSlice.injectEndpoints({
       providesTags: (_, __, id) => [{ type: TagType.ANIMAL, id }],
       query: (id) => generatePath(ApiRoute.ANIMAL.BY_ID, { id: id.toString() }),
     }),
-    update: builder.mutation<ZooAnimal, UpdateAnimalDto>({
+    updateAnimal: builder.mutation<ZooAnimal, UpdateAnimalDto>({
       invalidatesTags: (_, __, { id }) => [{ type: TagType.ANIMAL, id }],
       query: ({ id, body }) => ({
         url: generatePath(ApiRoute.ANIMAL.BY_ID, { id: id.toString() }),

@@ -41,12 +41,12 @@ export const ChangeAnimalDialogForm = ({
   animalId: number | null;
   setAnimalId: React.Dispatch<number | null>;
 }) => {
-  const { data } = animalApiSlice.useGetAllQuery();
+  const { data } = animalApiSlice.useGetAllAnimalsQuery();
   const animal = data?.find((a) => a.id === animalId) || {
     scientificName: "",
     name: "",
   };
-  const [update, result] = animalApiSlice.useUpdateMutation();
+  const [update, result] = animalApiSlice.useUpdateAnimalMutation();
   const onSubmit = (data: ChangeAnimalFormData) => {
     if (!animalId) return;
     update({ id: animalId, body: data });

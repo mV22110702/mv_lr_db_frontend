@@ -3,6 +3,25 @@
 @tailwind utilities;
 
 @layer base {
+  .DialogOverlay {
+    background: rgba(0 0 0 / 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    place-items: center;
+    overflow-y: auto;
+  }
+
+  .DialogContent {
+    min-width: 300px;
+    background: white;
+    padding: 30px;
+    border-radius: 4px;
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;

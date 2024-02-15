@@ -4,7 +4,8 @@ import { AppRoute } from "@/lib/enums/app-route.enum.ts";
 import { HomePage } from "@/pages/homePage.tsx";
 import { AnimalsPage } from "@/pages/animals-page/animalsPage.tsx";
 import { DetailsPage } from "@/pages/animals-page/detailsPage.tsx";
-import {KeepersPage} from "@/pages/keepers-page/keepersPage.tsx";
+import { KeepersPage } from "@/pages/keepers-page/keepersPage.tsx";
+import { ShiftsPage } from "@/pages/shifts-page/shiftsPage.tsx";
 
 export const Router = () => {
   return (
@@ -13,6 +14,7 @@ export const Router = () => {
       <Route path={AppRoute.ANIMALS.ROOT} element={<AnimalsPage />} />
       <Route path={AppRoute.ANIMALS.DETAILS} element={<DetailsPage />} />
       <Route path={AppRoute.KEEPERS.ROOT} element={<KeepersPage />} />
+      <Route path={AppRoute.SHIFTS.ROOT} element={<ShiftsPage />} />
     </RouterProvider>
   );
 };

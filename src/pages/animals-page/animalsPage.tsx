@@ -18,7 +18,8 @@ import { Button } from "@/components/ui/button.tsx";
 import { AddAnimalDialogForm } from "@/pages/animals-page/components/add-animal-dialog-form.tsx";
 
 export const AnimalsPage: FC = () => {
-  const { data, error, isError, isLoading } = animalApiSlice.useGetAllAnimalsQuery();
+  const { data, error, isError, isLoading } =
+    animalApiSlice.useGetAllAnimalsQuery();
   const [chosenAnimalId, setChosenAnimalId] = useState<number | null>(null);
   const [openAddAnimalDialog, setOpenAddAnimalDialog] = useState(false);
   const columns = useAnimalColumns(setChosenAnimalId, setOpenAddAnimalDialog);
@@ -30,7 +31,13 @@ export const AnimalsPage: FC = () => {
   } else {
     content = <DataTable columns={columns} data={data!} />;
   }
-
+  const handleClose = () => {
+    if (chosenAnimalId) {
+      setChosenAnimalId(null);
+    } else if (openAddAnimalDialog) {
+      setOpenAddAnimalDialog(false);
+    }
+  };
   return (
     <Dialog open={!!chosenAnimalId || openAddAnimalDialog}>
       <div
@@ -41,8 +48,7 @@ export const AnimalsPage: FC = () => {
         <h1 className="text-center text-3xl font-bold">Animals</h1>
         <div>{content}</div>
 
-        <DialogContent
-        >
+        <DialogContent onClose={handleClose}>
           {!openAddAnimalDialog ? (
             <AnimalPageChangeDialogContent
               chosenAnimalId={chosenAnimalId}

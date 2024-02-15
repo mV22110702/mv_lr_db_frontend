@@ -29,7 +29,13 @@ export const KeepersPage: FC = () => {
   } else {
     content = <DataTable columns={columns} data={data!} />;
   }
-
+const handleClose = ()=>{
+    if (chosenKeeperId) {
+        setChosenKeeperId(null);
+    } else if (openAddKeeperDialog) {
+        setOpenAddKeeperDialog(false);
+    }
+}
   return (
     <Dialog open={!!chosenKeeperId || openAddKeeperDialog}>
       <div
@@ -40,7 +46,7 @@ export const KeepersPage: FC = () => {
         <h1 className="text-center text-3xl font-bold">Keepers</h1>
         <div>{content}</div>
 
-        <DialogContent>
+        <DialogContent onClose={handleClose}>
           {!openAddKeeperDialog ? (
             <KeeperPageChangeDialogContent
               chosenKeeperId={chosenKeeperId}

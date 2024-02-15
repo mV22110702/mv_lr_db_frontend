@@ -40,7 +40,7 @@ export const AddAnimalDialogForm = ({
 }: {
   setOpenAddAnimalDialog: React.Dispatch<boolean>;
 }) => {
-  const [create, result] = animalApiSlice.useCreateMutation();
+  const [create, result] = animalApiSlice.useCreateAnimalMutation();
   const onSubmit = (data: AddAnimalFormData) => {
     create(data);
   };
