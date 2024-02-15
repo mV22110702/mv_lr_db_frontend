@@ -46,7 +46,7 @@ export const feedHistoryApiSlice = apiSlice.injectEndpoints({
           : [{ type: TagType.FEED_HISTORY, id: "LIST" }],
       query: (body) => ({
         url: ApiRoute.FEED_HISTORY.ALL,
-        method: HttpMethod.GET,
+        method: HttpMethod.POST,
         body: body ?? {},
       }),
       transformResponse: (response: FeedHistory[]) => {
@@ -67,7 +67,7 @@ export const feedHistoryApiSlice = apiSlice.injectEndpoints({
       ],
       query: (body) => ({
         url: ApiRoute.FEED_HISTORY.ONE,
-        method: HttpMethod.GET,
+        method: HttpMethod.POST,
         body,
       }),
       transformResponse: (response: FeedHistory | null) => {
