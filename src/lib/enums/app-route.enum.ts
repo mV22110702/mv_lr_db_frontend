@@ -2,6 +2,7 @@ export const AppRoute = {
     ROOT: '/',
     ANIMALS: {
         ROOT: '/animals',
+        DETAILS:'/animals/:id',
     },
     FEED_HISTORY: {
         ROOT: '/feed-history',

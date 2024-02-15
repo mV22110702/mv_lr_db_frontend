@@ -11,12 +11,16 @@ import { Button } from "@/components/ui/button.tsx";
 import { MoreHorizontal } from "lucide-react";
 import { DialogTrigger } from "@/components/ui/dialog.tsx";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { generatePath } from "react-router";
+import { AppRoute } from "@/lib/enums/app-route.enum.ts";
 
 export const useAnimalColumns = (
   setChosenAnimalId: React.Dispatch<number | null>,
   setOpenAddAnimalDialog: React.Dispatch<boolean>,
 ) => {
   const [remove, result] = animalApiSlice.useRemoveMutation();
+  const navigate = useNavigate();
   const onRemove = (id: number) => {
     remove(id);
   };
@@ -82,6 +86,17 @@ export const useAnimalColumns = (
                   </DialogTrigger>
                   <DropdownMenuItem onSelect={() => onRemove(animal.id)}>
                     Delete
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onSelect={() =>
+                      navigate(
+                        generatePath(AppRoute.ANIMALS.DETAILS, {
+                          id: animal.id.toString(),
+                        }),
+                      )
+                    }
+                  >
+                    Details
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
