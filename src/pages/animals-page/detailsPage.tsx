@@ -10,7 +10,7 @@ import { useAnimalDetailsColumns } from "@/pages/animals-page/hooks/useAnimalDet
 export const DetailsPage = () => {
   const params = useParams<{ id: string }>();
   const [getDetails, { data, isSuccess, isError }] =
-    animalApiSlice.useLazyGetDetailsByIdQuery();
+    animalApiSlice.useLazyGetAnimalDetailsByIdQuery();
   const navigate = useNavigate();
   const { shiftHistoryColumns, feedHistoryColumns } = useAnimalDetailsColumns();
   let content = null;
