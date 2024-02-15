@@ -81,7 +81,7 @@ const FeedHistoryPageAddDialogContent = ({
   return (
     <>
       <DialogHeader>
-        <DialogTitle>Add feedHistory</DialogTitle>
+        <DialogTitle>Add feed history</DialogTitle>
         <DialogDescription></DialogDescription>
       </DialogHeader>
       <AddFeedHistoryDialogForm setOpenAddFeedHistoryDialog={setOpenAddFeedHistoryDialog} />
@@ -99,7 +99,7 @@ const FeedHistoryPageChangeDialogContent = ({
   return (
     <>
       <DialogHeader>
-        <DialogTitle>Edit feedHistory</DialogTitle>
+        <DialogTitle>Edit feed history</DialogTitle>
         <DialogDescription></DialogDescription>
       </DialogHeader>{" "}
       {!chosenFeedHistoryId ? (

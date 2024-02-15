@@ -167,10 +167,10 @@ export const AddFeedHistoryDialogForm = ({
                     <SelectValue placeholder="Select keeper" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className={"z-5000 bg-white"}>
+                <SelectContent className={"bg-white"}>
                   {isErrorKeepers ? (
                     <SelectItem disabled value={"."}>
-                      Error loading animals
+                      Error loading keepers
                     </SelectItem>
                   ) : isLoadingKeepers ? (
                     <SelectItem disabled value={"."}>
@@ -204,7 +204,7 @@ export const AddFeedHistoryDialogForm = ({
                     <SelectValue placeholder="Select food" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className={"z-5000 bg-white"}>
+                <SelectContent className={"bg-white"}>
                   {isErrorFoods ? (
                     <SelectItem disabled value={"."}>
                       Error loading food
@@ -214,11 +214,14 @@ export const AddFeedHistoryDialogForm = ({
                       Loading...
                     </SelectItem>
                   ) : (
-                    foods!.map((food) => (
-                      <SelectItem key={food.id} value={food.id.toString()}>
-                        {food.name}
-                      </SelectItem>
-                    ))
+                    foods!.map((food) => {
+                        console.log(food);
+                        return (
+                            <SelectItem key={food.id} value={food.id.toString()}>
+                                {food.name}
+                            </SelectItem>
+                        )
+                    })
                   )}
                 </SelectContent>
               </Select>

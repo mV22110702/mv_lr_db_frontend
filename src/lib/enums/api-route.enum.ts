@@ -6,7 +6,9 @@ export const ApiRoute = {
   },
   FEED_HISTORY: {
     ONE: "/feed-history/one",
+    ONE_FIND: "/feed-history/one/find",
     ALL: "/feed-history/all",
+    ALL_FIND: "/feed-history/all/find",
   },
   FOOD: {
     ROOT: "/food",

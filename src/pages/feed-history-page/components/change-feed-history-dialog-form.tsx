@@ -128,7 +128,7 @@ export const ChangeFeedHistoryDialogForm = ({
                     <SelectValue placeholder="Select food" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className={"z-5000 bg-white"}>
+                <SelectContent className={"bg-white"}>
                   {isErrorFoods ? (
                     <SelectItem disabled value={"."}>
                       Error loading food

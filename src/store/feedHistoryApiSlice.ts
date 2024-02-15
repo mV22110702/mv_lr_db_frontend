@@ -45,7 +45,7 @@ export const feedHistoryApiSlice = apiSlice.injectEndpoints({
             ]
           : [{ type: TagType.FEED_HISTORY, id: "LIST" }],
       query: (body) => ({
-        url: ApiRoute.FEED_HISTORY.ALL,
+        url: ApiRoute.FEED_HISTORY.ALL_FIND,
         method: HttpMethod.POST,
         body: body ?? {},
       }),
@@ -66,7 +66,7 @@ export const feedHistoryApiSlice = apiSlice.injectEndpoints({
         },
       ],
       query: (body) => ({
-        url: ApiRoute.FEED_HISTORY.ONE,
+        url: ApiRoute.FEED_HISTORY.ONE_FIND,
         method: HttpMethod.POST,
         body,
       }),
